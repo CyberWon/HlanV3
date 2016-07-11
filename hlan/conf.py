@@ -1,4 +1,4 @@
-import os
+import os,yaml,subprocess
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 MOD_DIR = os.path.join(BASE_DIR,'mod')
@@ -34,4 +34,9 @@ def hlanLog(msg,Level=0,user='root',ip='127.0.0.1'):
         logging.warn('%s %s %s'%(ip,user,msg))
     elif Level==2:
         logging.error('%s %s %s'%(ip,user,msg))
-    
+def readGaIPGroup():
+    with open(os.path.join(BASE_DIR,'etc/ga/ip_group.yml'),'r') as f:
+        ga_ip_group=yaml.load(f)
+    return ga_ip_group
+def execCMD(f):
+    return subprocess.call(f)

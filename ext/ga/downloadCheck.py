@@ -4,8 +4,9 @@ try:
     import xml.etree.cElementTree as ET 
 except ImportError: 
     import xml.etree.ElementTree as ET 
-CURRENT_VERSION='24.00.23.74'
+
 def RISING_CHECK(IP):
+    global CURRENT_VERSION
     RISING_URL1='http://%s/rsupgrade/rspcver12.xml'%IP
     RISING_VERSION_CODE,RISING_VERSION_XML=mycurl(RISING_URL1)
     if RISING_VERSION_CODE!=200:
@@ -25,14 +26,17 @@ def RISING_CHECK(IP):
             pass
         
     url='http://%s/rsupgrade/pcver/cms/compsver%s.inf'%(IP,RISING_VERSION)
-    return (RISING_VERSION_CODE,RISING_VERSION_STATUS,mycurl(url)[0])
-def main(userLine):
+    return (RISING_VERSION_CODE,RISING_VERSION_STATUS,mycurl(url)[0],RISING_VERSION)
+def main(userLine,version):
+    global CURRENT_VERSION
+    CURRENT_VERSION=version
     T_thread=[]
     global res_json
     res_json={}
     for i in userLine:
-        t=threading.Thread(target=RISING_RES,args=(i,RISING_CHECK(i)))
-        T_thread.append(t)
+        if i!='':
+            t=threading.Thread(target=RISING_RES,args=(i,RISING_CHECK(i)))
+            T_thread.append(t)
     for i in range(len(T_thread)):
         t.setDaemon(True)
         T_thread[i].start()

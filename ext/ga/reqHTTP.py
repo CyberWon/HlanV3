@@ -1,13 +1,16 @@
+import requests
+def reqHeader(url,header_type='Content-Length',TIME_OUT=3):
+   
+    try:
+        response = requests.head(url,timeout=TIME_OUT)
+        content=response
+        response.close()
+        return (content.status_code,content.headers['server'],content.headers['last-modified'],content.headers[header_type])
+    except:
+        return (404,'')
 
-def reqHeader(url,header_type='Content-Length'):
-    import requests
-    response = requests.head(url)
-    content=response
-    response.close()
-    return (content.status_code,content.headers['server'],content.headers['last-modified'],content.headers[header_type])
-
+        
 def mycurl(url,TIME_OUT=3):
-    import requests
     try:
         response = requests.get(url,timeout=TIME_OUT)
         response.close()

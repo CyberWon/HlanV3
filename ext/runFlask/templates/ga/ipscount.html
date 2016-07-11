@@ -7,6 +7,11 @@
                 <div class="ibox">
                     <div class="ibox-title">
                         <h5>IP网段信息统计</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link" href="javaScript:void(0);" onclick="UpdateIP()">
+                                <i class="glyphicon glyphicon-refresh"></i>更新IP文件
+                            </a>
+                        </div>
                     </div>
                     <div class="ibox-content">
                     <div id="msg"  class="alert alert-success col-md-11">
@@ -36,22 +41,28 @@
     {% include "hplus-js.html" %}
     <script src="/static/js/plugins/footable/footable.all.min.js"></script>
     <script>
-    $(document).ready(function() {
-        console.log('ok')
-    });
     function GetArgs(){
     	var msg=document.getElementById("msg");
     	msg.innerHTML='正在统计中,请稍候';
     	var args=$("#Args").val();
     	var url="/ga/IPsCount/api?ips="+args;
-    	$.get(url,{},
+    	$.get(url,{m:"t"},
     	        function(data,status){  
     	            $("#hlan").html(data);
     	            $(".footable").footable();
     	            msg.innerHTML='统计完成.';
     	            }   
     	        );
-    	
+    };
+    function UpdateIP(){
+    	var msg=document.getElementById("msg");
+    	msg.innerHTML='正在更新IP文件,请稍候';
+    	var url="/ga/IPsCount/api";
+    	$.get(url,{m:"g"},
+    	        function(data,status){  
+    	            msg.innerHTML='更新完成.';
+    	            }   
+    	        );
     };
     </script>
     </body>
