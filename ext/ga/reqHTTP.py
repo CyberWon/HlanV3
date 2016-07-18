@@ -1,6 +1,5 @@
 import requests
 def reqHeader(url,header_type='Content-Length',TIME_OUT=3):
-   
     try:
         response = requests.head(url,timeout=TIME_OUT)
         content=response
@@ -9,7 +8,13 @@ def reqHeader(url,header_type='Content-Length',TIME_OUT=3):
     except:
         return (404,'')
 
-        
+def Post(url,data,headers):
+    try:
+        r = requests.post(url, data=data,headers=headers)
+        r.close()
+        return r.text
+    except Exception as e:
+        print(e)        
 def mycurl(url,TIME_OUT=3):
     try:
         response = requests.get(url,timeout=TIME_OUT)

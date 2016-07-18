@@ -1,4 +1,5 @@
 import os,yaml,subprocess
+import configparser as cp
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 MOD_DIR = os.path.join(BASE_DIR,'mod')
@@ -40,3 +41,13 @@ def readGaIPGroup():
     return ga_ip_group
 def execCMD(f):
     return subprocess.call(f)
+def reqRunmode(runmode):
+    cf=cp.ConfigParser()
+    cf.read(os.path.join(BASE_DIR,'etc/hlan.ini'))
+    try:
+        pk=cf.get('runmode',runmode)
+        return pk
+    except Exception as e:
+        print(e)
+        return 'null'
+    
