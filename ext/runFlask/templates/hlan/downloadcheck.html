@@ -1,0 +1,114 @@
+{% include "ga/header.html" %}
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content  animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="ibox">
+					<div class="ibox-content">
+						<h2>分流服务器下载检测</h2>
+						<div id="msg"  class="alert alert-success col-md-12">
+                          	选择要检测的内容
+                        </div>
+						<div class="input-group">
+							<select id='sltchoice' class="form-control m-b" name="account" onchange='GetCheckInfo()'>
+                            <option value="0">安装包检测-360</option>
+                            <option value="1">安装包检测-金山</option>
+                            <option value="2">安装包检测-江民</option>
+                            <option value="3">安装包检测-瑞星</option>
+                            <option value="rising">产品版本检测-瑞星</option>
+                         </select>
+
+							<span class="input-group-btn">
+                                        <button type="button" class="btn btn btn-primary" onclick="GetArgs()"> <i class="fa fa-search"></i>检测</button>
+                                </span>
+						</div>
+						
+						<div class="clients-list">
+						
+							<ul class="nav nav-tabs">
+								<li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>添加IP</a>
+								</li>
+								<li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>预设分组</a>
+								</li>
+							</ul>
+							<div class="tab-content">
+								<div id="tab-1" class="tab-pane active">
+									<div class="full-height-scroll">
+										<div class="table-responsive">
+											<textarea id='txtip' class="form-control" rows="20"></textarea>
+										</div>
+									</div>
+								</div>
+								<div id="tab-2" class="tab-pane">
+									<div class="full-height-scroll">
+										<div class="table-responsive">
+											<div class="ibox-content">
+                    						<div id="ipgroup" class="test">
+                    						<ul class="list-group"><li class="list-group-item node-ipgroup node-selected" data-nodeid="0" style="color:#FFFFFF;background-color:#428bca;"><span class="icon"><i class="click-collapse glyphicon glyphicon-minus"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>全国</li><li class="list-group-item node-ipgroup" data-nodeid="1" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>上海</li><li class="list-group-item node-ipgroup" data-nodeid="2" style=""><span class="indent"></span><span class="icon"><i class="glyphicon"></i></span><span class="icon"><i class="glyphicon glyphicon-stop"></i></span>北京</li></ul></div>
+                    						</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="ibox ">
+
+					<div class="ibox-content">
+						<div class="tab-content">
+							<div id="contact-1" class="tab-pane active">
+								<div class="row m-b-lg" id='hlan'>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include "hplus-js.html" %}
+	<script src="/static/js/plugins/treeview/bootstrap-treeview.js"></script>
+	<script src="/static/js/my/pc.js"></script>
+	<script>
+	function GetArgs(){
+		var mip=$("#txtip").val();
+		var msg=$("#msg").text();
+		var msg_div=document.getElementById("msg")
+		msg_div.innerHTML="检测中,请稍侯";
+    	var args=$("#sltchoice").val();
+    	var url="/ga/DownloadCheck/api?m=res&c="+args+"&d="+msg;
+    	$.post(url,{ip:mip},
+    	        function(data,status){  
+    	            $("#hlan").html(data);
+    	            GetCheckInfo();
+    	            }   
+    	        );
+    	
+    };
+    function GetCheckInfo(){
+    	var args=$("#sltchoice").val();
+    	var url="/ga/DownloadCheck/api?m=info&c="+args;
+    	$.post(url,{},
+    	        function(data,status){  
+    					var msg=document.getElementById("msg");
+        				msg.innerHTML=data;
+    	            }   
+    	        );
+    	
+    };
+		$(function() {
+			$(".full-height-scroll").slimScroll({
+				height: "100%"
+			});
+			GetCheckInfo();
+			getIPGroup();
+		});
+	</script>
+</body>
+
+</html>

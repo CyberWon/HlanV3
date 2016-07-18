@@ -1,0 +1,24 @@
+{% extends "hlan/hplus.html" %} {% block body %}
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+	<div id="wrapper">
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="nav-close"><i class="fa fa-times-circle"></i>
+			</div>
+			{% include "hlan/nav.html" %}
+		</nav>
+		<div id="page-wrapper" class="gray-bg dashbard-1">
+			<div class="row border-bottom">
+				<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+					{% include "hlan/nav-top.html" %}
+				</nav>
+			</div>
+			{% include "hlan/tab.html" %}
+			{% include "hlan/footer.html" %}
+		</div>
+
+	</div>
+	{% include "hplus-js.html" %}
+</body>
+
+{% endblock %}

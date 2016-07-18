@@ -1,0 +1,70 @@
+{% include "devops/header.html" %}
+<body class="gray-bg">
+<link href="/static/css/plugins/footable/footable.core.css" rel="stylesheet">
+    <div class="wrapper wrapper-content animated fadeInUp">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>IP网段信息统计</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link" href="javaScript:void(0);" onclick="UpdateIP()">
+                                <i class="glyphicon glyphicon-refresh"></i>更新IP文件
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                    <div id="msg"  class="alert alert-success col-md-11">
+                            ip段之间用分号';'隔开.不要用分号结尾
+                        </div>
+                        <div class="row m-b-sm m-t-sm">
+                            <div class="col-md-11">
+                                <div class="input-group">
+                                    <input id='Args' onkeydown='if(event.keyCode==13){btnArgs.click()}' type="text" placeholder="10.1.x.x-10.1.x.x;10.2.x.x-10.2.x.x" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button type="button" id='btnArgs' class="btn btn-sm btn-primary" onclick="GetArgs()"> 统计</button> </span>
+                                </div>
+                            </div>
+                  
+                        </div>
+                        
+
+                        <div id="hlan" class="project-list">
+
+               
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% include "hplus-js.html" %}
+    <script src="/static/js/plugins/footable/footable.all.min.js"></script>
+    <script>
+    function GetArgs(){
+    	var msg=document.getElementById("msg");
+    	msg.innerHTML='正在统计中,请稍候';
+    	var args=$("#Args").val();
+    	var url="/ga/IPsCount/api?ips="+args;
+    	$.get(url,{m:"t"},
+    	        function(data,status){  
+    	            $("#hlan").html(data);
+    	            $(".footable").footable();
+    	            msg.innerHTML='统计完成.';
+    	            }   
+    	        );
+    };
+    function UpdateIP(){
+    	var msg=document.getElementById("msg");
+    	msg.innerHTML='正在更新IP文件,请稍候';
+    	var url="/ga/IPsCount/api";
+    	$.get(url,{m:"g"},
+    	        function(data,status){  
+    	            msg.innerHTML='更新完成.';
+    	            }   
+    	        );
+    };
+    </script>
+    </body>
+
+</html>
